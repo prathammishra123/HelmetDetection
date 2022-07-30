@@ -28,7 +28,7 @@ while (True) :
     if frame_img is not None:
         cv2.imshow("frame", frame_img)
         prediction = model.predict(frame_img.reshape(1,100,100,1),batch_size = 1)
-        print(classes[prediction.argmax()])
+        # print(classes[prediction[0].argmax()])
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
