@@ -55,7 +55,6 @@ def save_response_content(response, destination):
                 f.write(chunk)
 
 def find_faults(url):
-    # url = "https://drive.google.com/file/d/11q7_j10LGkg0QOlTNur5yl2zIB7x_mV_/view?usp=sharing"
     file_id = url.split("/")[-2]
     destination = './input.mp4'
     download_file_from_google_drive(file_id, destination)
