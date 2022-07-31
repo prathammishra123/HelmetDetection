@@ -1,10 +1,6 @@
-# TODO: Use haarcascade to get faces (codebasics playlist)
-# TODO: Reduce to same size
-# TODO: Turn to grayscale
-# TODO: Save in new folder
+# This file implements face cascades in the initial dataset and then put them inside cropped folder
 import numpy as np
 import cv2
-# from matplotlib import pyplot as plt
 
 face_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_eye.xml')
@@ -18,9 +14,6 @@ def get_cropped_image_if_2_eyes(image_path):
         try:
             roi_gray = gray[y-30:y+h+50, x-30:x+w+30]
             roi_color = img[y-30:y+h+50, x-30:x+w+30]
-            # eyes = eye_cascade.detectMultiScale(roi_gray)
-            # if len(eyes) >= 2:
-            # print(type(roi_color))
             roi_color_resize=cv2.resize(roi_color, (100,100))
             return roi_color_resize
         except Exception as e:
@@ -48,28 +41,28 @@ os.mkdir(path_to_cr_data)
 
 # this function iterates all images and if the image is proper it stores  that inside cropped folder inside folder of withHelmet or WithoutHelmet whichever it belongs to
 cropped_image_dirs = []
-celebrity_file_names_dict = {}
+file_names_dict = {}
 
 for img_dir in img_dirs:
     count = 1
-    celebrity_name = img_dir.split('/')[-1]
-    print(celebrity_name)
+    file_name = img_dir.split('/')[-1]
+    print(file_name)
     
-    celebrity_file_names_dict[celebrity_name] = []
+    file_names_dict[file_name] = []
     
     for entry in os.scandir(img_dir):
         roi_color = get_cropped_image_if_2_eyes(entry.path)
         
         if roi_color is not None:
-            cropped_folder = path_to_cr_data + celebrity_name
+            cropped_folder = path_to_cr_data + file_name
             if not os.path.exists(cropped_folder):
                 os.makedirs(cropped_folder)
                 cropped_image_dirs.append(cropped_folder)
                 print("Generating cropped images in folder: ",cropped_folder)
                 
-            cropped_file_name = celebrity_name + str(count) + ".png"
+            cropped_file_name = file_name + str(count) + ".png"
             cropped_file_path = cropped_folder + "/" + cropped_file_name 
             print(cropped_file_path)
             cv2.imwrite(cropped_file_path, roi_color)
-            celebrity_file_names_dict[celebrity_name].append(cropped_file_path)
+            file_names_dict[file_name].append(cropped_file_path)
             count += 1 

@@ -1,14 +1,15 @@
+# This is a extra file through which I can open my live camera and apply my model 
 import cv2
 import tensorflow as tf
 from tensorflow import keras
-
+# loading model
 model = keras.models.load_model("./model.h5")
-
+# importing face and eyes cascades
 face_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_eye.xml')
 
 classes = {0: "No helmet", 1: "Helmet found"}
-
+#  functionn to detect face
 def get_cropped_image_if_2_eyes(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -20,7 +21,7 @@ def get_cropped_image_if_2_eyes(img):
             return roi_color_resize
         except Exception as e:
             return cv2.resize(gray, (100, 100))
-
+# starting live video here 
 vid = cv2.VideoCapture(0)
 while (True) :
     ret, frame = vid.read()

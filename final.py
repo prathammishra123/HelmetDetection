@@ -1,3 +1,4 @@
+# This file has a funcion find_faults which takes url as input drive video from it processs it stores the images with no helmets then delete the video  and returns the array of fault images
 import requests
 import cv2
 import numpy as np
@@ -5,14 +6,14 @@ import os
 import tensorflow as tf
 from tensorflow import keras
 import time
-
+# loading model and cascades
 model = keras.models.load_model("./model.h5")
 
 face_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_eye.xml')
 
 classes = {0: "No helmet", 1: "Helmet found"}
-
+#  this function detects a face 
 def get_cropped_image_if_2_eyes(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -24,7 +25,7 @@ def get_cropped_image_if_2_eyes(img):
             return roi_color_resize
         except Exception as e:
             return cv2.resize(gray, (100, 100))
-
+# This function downloads a video from google drive
 def download_file_from_google_drive(id, destination):
     URL = "https://docs.google.com/uc?export=download"
 
@@ -53,7 +54,7 @@ def save_response_content(response, destination):
         for chunk in response.iter_content(CHUNK_SIZE):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
-
+# this function takes input as a url download the video and returns an array of fault  images
 def find_faults(url):
     file_id = url.split("/")[-2]
     destination = './input.mp4'

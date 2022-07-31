@@ -1,12 +1,12 @@
+# In this file I trained my model and saved it in model.h5 file
 import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
 import numpy as np
 import os
 import cv2
-
+# Stores all images and labesl in array
 PATH = "./Dataset/cropped/Augmented"
-
 images = []
 labels = []
 
@@ -26,9 +26,9 @@ for label in os.listdir(PATH):
 images = np.array(images)
 labels = np.array(labels)
 images = images.reshape(-1,100,100,1)
-
+# Here we split our Dataset
 train_image, test_image, train_label, test_label = train_test_split(images,labels,shuffle=True,test_size = 0.1)
-
+# Here we  define and train our model
 model = keras.Sequential([
     keras.layers.Conv2D(100, (3, 3), input_shape=(100, 100, 1), activation="relu"),
     keras.layers.Conv2D(200, (3, 3), activation="relu"),
@@ -45,6 +45,7 @@ model = keras.Sequential([
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 
 model.fit(train_image, train_label, epochs=10)
+# Here we evaluate the model
 print(model.evaluate(test_image, test_label))
-
+# Here we save our model
 model.save("./model.h5")

@@ -5,11 +5,12 @@ import numpy as np
 import os
 import cv2
 from sklearn.model_selection import train_test_split
+# This file is there just to test the model find accuraccy and length of train and test dataset
 #  Here I load the model
 model = keras.models.load_model("./model.h5")
 #  This is path to the final dataset ie data after being augmented
 PATH = "./Dataset/cropped/Augmented"
-
+# To store all images and their labels
 images = []
 labels = []
 
