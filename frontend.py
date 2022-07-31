@@ -1,7 +1,7 @@
 # This file creates front end for me using a library in python called streamlit
 from final import *
 import streamlit as st
-
+# final is a file that has a function find_faults that takes a url download the video and find faults in it returning an array of images .
 st.title('Helmet Detector')
 url = st.text_input("Enter URL")
 # sample url
